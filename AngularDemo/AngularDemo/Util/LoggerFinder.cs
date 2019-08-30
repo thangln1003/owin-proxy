@@ -9,6 +9,8 @@ namespace App.Demo.Util
 {
     internal static class LoggerFinder
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         //public static ILogger GetOrCreateLogger(
         //    IAppBuilder appBuilder,
         //    string logCategoryName)

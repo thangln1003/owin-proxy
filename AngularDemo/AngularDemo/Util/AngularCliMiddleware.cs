@@ -9,6 +9,7 @@ using AngularDemo.Npm;
 using AngularDemo.Proxying;
 using App.Demo.Util;
 using Microsoft.Owin.Logging;
+using NLog;
 
 namespace AngularDemo.Util
 {
@@ -16,6 +17,7 @@ namespace AngularDemo.Util
     {
         private static TimeSpan RegexMatchTimeout = TimeSpan.FromSeconds(5.0);
         private const string LogCategoryName = "Microsoft.AspNetCore.SpaServices";
+        private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static void Attach(ISpaBuilder spaBuilder, string npmScriptName)
         {
@@ -24,26 +26,26 @@ namespace AngularDemo.Util
                 throw new ArgumentException("Cannot be null or empty", "sourcePath");
             if (string.IsNullOrEmpty(npmScriptName))
                 throw new ArgumentException("Cannot be null or empty", nameof(npmScriptName));
-            //ILogger logger = LoggerFinder.GetOrCreateLogger(spaBuilder.ApplicationBuilder, "Microsoft.AspNetCore.SpaServices");
-            ILogger logger = null;
+            //ILogger logger = LoggerFinder.GetOrCreateLogger(spaBuilder.ApplicationBuilder, "AngularDemo");
+            var logger = Logger;
             Task<Uri> targetUriTask = StartAngularCliServerAsync(sourcePath, npmScriptName, logger)
                 .ContinueWith<Uri>((Func<Task<AngularCliMiddleware.AngularCliServerInfo>, Uri>) (task =>
                     new UriBuilder("http", "localhost", task.Result.Port).Uri));
 
-            spaBuilder.UseProxyToSpaDevelopmentServer((Func<Task<Uri>>) (() =>
-            {
-                TimeSpan startupTimeout = spaBuilder.Options.StartupTimeout;
-                return targetUriTask.WithTimeout<Uri>(startupTimeout,
-                    "The Angular CLI process did not start listening for requests " +
-                    $"within the timeout period of {(object) startupTimeout.Seconds} seconds. " +
-                    "Check the log output for error information.");
-            }));
+            spaBuilder.UseProxyToSpaDevelopmentServer((Func<Task<Uri>>)(() =>
+           {
+               TimeSpan startupTimeout = spaBuilder.Options.StartupTimeout;
+               return targetUriTask.WithTimeout<Uri>(startupTimeout,
+                   "The Angular CLI process did not start listening for requests " +
+                   $"within the timeout period of {(object)startupTimeout.Seconds} seconds. " +
+                   "Check the log output for error information.");
+           }));
         }
 
-        private static async Task<AngularCliServerInfo> StartAngularCliServerAsync(string sourcePath, string npmScriptName, ILogger logger)
+        private static async Task<AngularCliServerInfo> StartAngularCliServerAsync(string sourcePath, string npmScriptName, NLog.ILogger logger)
         {
             int availablePort = TcpPortFinder.FindAvailablePort();
-            //logger.WriteInformation($"Starting @angular/cli on port {(object) availablePort}...");
+            logger.Info($"Starting @angular/cli on port {(object) availablePort}...");
             NpmScriptRunner npmScriptRunner = new NpmScriptRunner(sourcePath, npmScriptName, $"--port {(object) availablePort}", (IDictionary<string, string>)null);
             npmScriptRunner.AttachToLogger(logger);
             Match match;
@@ -51,15 +53,16 @@ namespace AngularDemo.Util
             {
                 try
                 {
-                    match = await npmScriptRunner.StdOut.WaitForMatch(new Regex("open your browser on (http\\S+)", RegexOptions.None, AngularCliMiddleware.RegexMatchTimeout));
+                    match = await npmScriptRunner.StdOut.WaitForMatch(new Regex("open your browser on (http\\S+)",
+                        RegexOptions.None, AngularCliMiddleware.RegexMatchTimeout));
                 }
                 catch (EndOfStreamException ex)
                 {
                     throw new InvalidOperationException("The NPM script '" + npmScriptName + "' exited without indicating that the Angular CLI was listening for requests. The error output was: " + stdErrReader.ReadAsString(), (Exception)ex);
                 }
             }
-            //Uri cliServerUri = new Uri(match.Groups[1].Value);
-            Uri cliServerUri = new Uri($"http://localhost:{availablePort}");
+            Uri cliServerUri = new Uri(match.Groups[1].Value);
+            //Uri cliServerUri = new Uri($"http://localhost:{availablePort}");
             AngularCliServerInfo serverInfo = new AngularCliServerInfo()
             {
                 Port = cliServerUri.Port

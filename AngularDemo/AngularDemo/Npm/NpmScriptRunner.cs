@@ -65,7 +65,7 @@ namespace AngularDemo.Npm
             StdErr = new EventedStreamReader(process.StandardError);
         }
 
-        public void AttachToLogger(ILogger logger)
+        public void AttachToLogger(NLog.ILogger logger)
         {
             // When the NPM task emits complete lines, pass them through to the real logger
             StdOut.OnReceivedLine += line =>
@@ -75,7 +75,7 @@ namespace AngularDemo.Npm
                     // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
                     // those to loggers (because a logger isn't necessarily any kind of terminal)
                     //logger.LogInformation(StripAnsiColors(line));
-                    logger.WriteInformation(StripAnsiColors(line));
+                    logger.Info(StripAnsiColors(line));
                 }
             };
 
@@ -84,7 +84,7 @@ namespace AngularDemo.Npm
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     //logger.LogError(StripAnsiColors(line));
-                    logger.WriteError(StripAnsiColors(line));
+                    logger.Error(StripAnsiColors(line));
                 }
             };
 

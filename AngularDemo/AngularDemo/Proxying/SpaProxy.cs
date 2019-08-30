@@ -148,7 +148,8 @@ namespace AngularDemo.Proxying
         {
             context.Response.StatusCode = (int)responseMessage.StatusCode;
             HttpResponseHeaders headers = responseMessage.Headers;
-            
+
+
             //foreach (var header in responseMessage.Headers)
             //{
             //    context.Response.Headers[header.Key] = header.Value.ToArray();
@@ -158,6 +159,47 @@ namespace AngularDemo.Proxying
             //{
             //    context.Response.Headers[header.Key] = header.Value.ToArray();
             //}
+
+            var test = responseMessage.Headers;
+            //foreach (var header in responseMessage.Headers)
+            //{
+            //    context.Response.Headers[header.Key] = header.Value.ToArray();
+            //}
+
+            //foreach (var header in responseMessage.Content.Headers)
+            //{
+            //    context.Response.Headers[header.Key] = header.Value.ToArray();
+            //}
+
+            if (responseMessage.Headers.AcceptRanges.Count > 0)
+            {
+                context.Response.Headers.Set("accept-ranges", responseMessage.Headers.AcceptRanges.ToString());
+            }
+
+            if (responseMessage.Headers.Age != null)
+            {
+                context.Response.Headers.Set("age", responseMessage.Headers.Age.ToString());
+            }
+
+            if (responseMessage.Headers.Connection != null)
+            {
+                context.Response.Headers.Set("connection", responseMessage.Headers.Connection.ToString());
+            }
+
+            if (responseMessage.Headers.ETag != null)
+            {
+                context.Response.Headers.Set("etag", responseMessage.Headers.ETag.ToString());
+            }
+
+            if (responseMessage.Headers.Date != null)
+            {
+                context.Response.Headers.Set("date", responseMessage.Headers.Date.ToString());
+            }
+
+            if (responseMessage.Content.Headers.ContentType != null)
+            {
+                context.Response.Headers.Set("content-type", responseMessage.Content.Headers.ContentType.MediaType);
+            }
 
             // SendAsync removes chunking from the response. This removes the header so it doesn't expect a chunked response.
             context.Response.Headers.Remove("transfer-encoding");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -69,7 +70,16 @@ namespace AngularDemo.Proxying
             // Proxy all requests to the SPA development server
             applicationBuilder.Use(async (context, next) =>
             {
-                var didProxyRequest = await SpaProxy.PerformProxyRequest(HttpContext.Current, neverTimeOutHttpClient, baseUriTaskFactory(), context.Request.CallCancelled, proxy404s: true);
+                string[] routes = new[] {"Home"};
+                if (routes.Any(x => x.Contains(context.Request.Path.Value)))
+                {
+                    await next();
+                }
+                else
+                {
+                    var didProxyRequest = await SpaProxy.PerformProxyRequest(HttpContext.Current,
+                        neverTimeOutHttpClient, baseUriTaskFactory(), context.Request.CallCancelled, proxy404s: true);
+                }
             });
         }
 

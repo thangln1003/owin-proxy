@@ -64,6 +64,6 @@ namespace AngularDemo
         /// Gets or sets the maximum duration that a request will wait for the SPA
         /// to become ready to serve to the client.
         /// </summary>
-        public TimeSpan StartupTimeout { get; set; } = TimeSpan.FromSeconds(50.0);
+        public TimeSpan StartupTimeout { get; set; } = TimeSpan.FromSeconds(60.0);
     }
 }

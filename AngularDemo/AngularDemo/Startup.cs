@@ -31,7 +31,7 @@ namespace AngularDemo
             //    return next();
             //});
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileSystem = new PhysicalFileSystem(@".\ClientApp\dist")
