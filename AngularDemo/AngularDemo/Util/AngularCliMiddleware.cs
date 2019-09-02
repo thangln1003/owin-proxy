@@ -37,7 +37,7 @@ namespace AngularDemo.Util
                TimeSpan startupTimeout = spaBuilder.Options.StartupTimeout;
                return targetUriTask.WithTimeout<Uri>(startupTimeout,
                    "The Angular CLI process did not start listening for requests " +
-                   $"within the timeout period of {(object)startupTimeout.Seconds} seconds. " +
+                   $"within the timeout period of {(object)startupTimeout.TotalSeconds} seconds. " +
                    "Check the log output for error information.");
            }));
         }
