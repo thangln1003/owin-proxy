@@ -7,6 +7,7 @@ namespace AngularDemo.SpaServices
     public class SpaOptions
     {
         private PathString _defaultPage = PathString.FromUriComponent("/index.html");
+        private PathString _defaultApi = PathString.FromUriComponent("/api");
 
         /// <summary>
         /// Constructs a new instance of <see cref="T:Microsoft.AspNetCore.SpaServices.SpaOptions" />.
@@ -32,15 +33,23 @@ namespace AngularDemo.SpaServices
         /// </summary>
         public PathString DefaultPage
         {
-            get
-            {
-                return this._defaultPage;
-            }
+            get => this._defaultPage;
             set
             {
                 if (string.IsNullOrEmpty(value.Value))
                     throw new ArgumentException("The value for DefaultPage cannot be null or empty.");
                 this._defaultPage = value;
+            }
+        }
+
+        public PathString DefaultApi
+        {
+            get => this._defaultApi;
+            set
+            {
+                if (string.IsNullOrEmpty(value.Value))
+                    throw new ArgumentException("The value for DefaultApi cannot be null or empty.");
+                this._defaultApi = value;
             }
         }
 

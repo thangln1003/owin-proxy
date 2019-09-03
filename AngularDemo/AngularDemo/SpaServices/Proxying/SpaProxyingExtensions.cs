@@ -3,6 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Routing;
+using AngularDemo.SpaServices.Routing;
+using Microsoft.Owin;
 using Owin;
 using WebSocketMiddleware;
 
@@ -68,23 +71,23 @@ namespace AngularDemo.SpaServices.Proxying
             // Proxy all requests to the SPA development server
             applicationBuilder.Use(async (context, next) =>
             {
-                //string[] routes = new[] {"Home"};
-                //if (routes.Any(x => x.Contains(context.Request.Path.Value.Trim('/'))))
-                //{
-                //    await next();
-                //}
-                //else
-                //{
-                var didProxyRequest = await SpaProxy.PerformProxyRequest(HttpContext.Current,
-                    neverTimeOutHttpClient, baseUriTaskFactory(), context.Request.CallCancelled, proxy404s: true);
-                //}
+                var contains = RouteTable.Routes.Contains(HttpContext.Current.Request.RequestContext.RouteData.Route);
+                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi))
+                {
+                    await next();
+                }
+                else
+                {
+                    var didProxyRequest = await SpaProxy.PerformProxyRequest(HttpContext.Current,
+                        neverTimeOutHttpClient, baseUriTaskFactory(), context.Request.CallCancelled, proxy404s: true);
+                }
             });
         }
 
         private static async Task WebSocketEcho(IWebSocketContext webSocketContext)
         {
             var buffer = new byte[1024];
-            IWebSocketReceiveResult received = await webSocketContext.Receive(new ArraySegment<byte>(buffer));
+            var received = await webSocketContext.Receive(new ArraySegment<byte>(buffer));
 
             while (!webSocketContext.ClientClosed)
             {

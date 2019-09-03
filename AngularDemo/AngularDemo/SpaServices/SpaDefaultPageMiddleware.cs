@@ -16,11 +16,16 @@ namespace AngularDemo.SpaServices
             var options = spaBuilder.Options;
 
             // Rewrite all requests to the default page
-            app.UseHandler((request, response, next) =>
+            app.Use((context, next) =>
             {
-                request.Path = options.DefaultPage.Value;
+                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi))
+                {
+                    return next.Invoke();
+                }
 
-                return next();
+                context.Request.Path = options.DefaultPage;
+
+                return next.Invoke();
             });
 
             // Serve it as a static file

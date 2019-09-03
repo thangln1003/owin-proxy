@@ -128,8 +128,8 @@ namespace AngularDemo.SpaServices.Proxying
             //    }
             //}
 
-            NameValueCollection headers = request.Headers;
-            for (int i = 0; i < headers.Count; i++)
+            var headers = request.Headers;
+            for (var i = 0; i < headers.Count; i++)
             {
                 if (!requestMessage.Headers.TryAddWithoutValidation(headers.GetKey(i), headers.Get(i)))
                 {
