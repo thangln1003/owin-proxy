@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace App.Demo.Util
+namespace AngularDemo.SpaServices.Util
 {
     internal static class TcpPortFinder
     {

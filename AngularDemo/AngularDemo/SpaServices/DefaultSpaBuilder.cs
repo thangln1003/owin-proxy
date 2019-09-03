@@ -1,8 +1,7 @@
 ﻿using System;
-using App.Demo;
 using Owin;
 
-namespace AngularDemo
+namespace AngularDemo.SpaServices
 {
     internal class DefaultSpaBuilder : ISpaBuilder
     {

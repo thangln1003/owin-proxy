@@ -1,5 +1,4 @@
 ﻿using System;
-using AngularDemo.WebSockets;
 using Owin;
 
 namespace AngularDemo.Extensions

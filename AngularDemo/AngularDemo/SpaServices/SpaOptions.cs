@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.Owin;
+using Microsoft.Owin.StaticFiles;
 
-namespace AngularDemo
+namespace AngularDemo.SpaServices
 {
     public class SpaOptions
     {
@@ -21,7 +22,7 @@ namespace AngularDemo
         internal SpaOptions(SpaOptions copyFromOptions)
         {
             this._defaultPage = copyFromOptions.DefaultPage;
-            //this.DefaultPageStaticFileOptions = copyFromOptions.DefaultPageStaticFileOptions;
+            this.DefaultPageStaticFileOptions = copyFromOptions.DefaultPageStaticFileOptions;
             this.SourcePath = copyFromOptions.SourcePath;
         }
 
@@ -51,7 +52,7 @@ namespace AngularDemo
         /// <see cref="P:Microsoft.AspNetCore.Hosting.IHostingEnvironment.WebRootPath" />, which by default is
         /// the <c>wwwroot</c> directory.
         /// </summary>
-        //public StaticFileOptions DefaultPageStaticFileOptions { get; set; }
+        public StaticFileOptions DefaultPageStaticFileOptions { get; set; }
 
         /// <summary>
         /// Gets or sets the path, relative to the application working directory,

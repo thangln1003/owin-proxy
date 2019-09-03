@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace App.Demo.Util
+namespace AngularDemo.SpaServices.Util
 {
     internal static class TaskTimeoutExtensions
     {

@@ -3,12 +3,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using AngularDemo.Extensions;
-using Microsoft.Owin;
 using Owin;
 using WebSocketMiddleware;
 
-namespace AngularDemo.Proxying
+namespace AngularDemo.SpaServices.Proxying
 {
     /// <summary>
     /// Extension methods for proxying requests to a local SPA development server during
@@ -70,16 +68,16 @@ namespace AngularDemo.Proxying
             // Proxy all requests to the SPA development server
             applicationBuilder.Use(async (context, next) =>
             {
-                string[] routes = new[] {"Home"};
-                if (routes.Any(x => x.Contains(context.Request.Path.Value)))
-                {
-                    await next();
-                }
-                else
-                {
-                    var didProxyRequest = await SpaProxy.PerformProxyRequest(HttpContext.Current,
-                        neverTimeOutHttpClient, baseUriTaskFactory(), context.Request.CallCancelled, proxy404s: true);
-                }
+                //string[] routes = new[] {"Home"};
+                //if (routes.Any(x => x.Contains(context.Request.Path.Value.Trim('/'))))
+                //{
+                //    await next();
+                //}
+                //else
+                //{
+                var didProxyRequest = await SpaProxy.PerformProxyRequest(HttpContext.Current,
+                    neverTimeOutHttpClient, baseUriTaskFactory(), context.Request.CallCancelled, proxy404s: true);
+                //}
             });
         }
 

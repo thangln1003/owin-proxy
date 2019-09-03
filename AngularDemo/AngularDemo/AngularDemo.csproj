@@ -197,7 +197,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AngularCliMiddlewareExtensions.cs" />
+    <Compile Include="SpaServices\AngularCliMiddlewareExtensions.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -206,31 +206,32 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="DefaultSpaBuilder.cs" />
+    <Compile Include="SpaServices\DefaultSpaBuilder.cs" />
     <Compile Include="Extensions\AppBuilderExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ISpaBuilder.cs" />
+    <Compile Include="SpaServices\ISpaBuilder.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Npm\NpmScriptRunner.cs" />
+    <Compile Include="SpaServices\Npm\NpmScriptRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proxying\SpaProxy.cs" />
-    <Compile Include="Proxying\SpaProxyingExtensions.cs" />
-    <Compile Include="Routing\DefaultRoute.cs" />
-    <Compile Include="Routing\DefaultRouteHandler.cs" />
-    <Compile Include="SpaOptions.cs" />
+    <Compile Include="SpaServices\Proxying\SpaProxy.cs" />
+    <Compile Include="SpaServices\Proxying\SpaProxyingExtensions.cs" />
+    <Compile Include="SpaServices\Routing\DefaultRoute.cs" />
+    <Compile Include="SpaServices\Routing\DefaultRouteHandler.cs" />
+    <Compile Include="SpaServices\SpaApplicationBuilderExtensions.cs" />
+    <Compile Include="SpaServices\SpaDefaultPageMiddleware.cs" />
+    <Compile Include="SpaServices\SpaOptions.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Util\AngularCliMiddleware.cs" />
-    <Compile Include="Util\EventedStreamReader.cs" />
-    <Compile Include="Util\EventedStreamStringReader.cs" />
-    <Compile Include="Util\LoggerFinder.cs" />
-    <Compile Include="Util\TaskTimeoutExtensions.cs" />
-    <Compile Include="Util\TcpPortFinder.cs" />
-    <Compile Include="WebSockets\WebSocketMiddleware.cs" />
-    <Compile Include="WebSockets\WebSocketOptions.cs" />
+    <Compile Include="SpaServices\Util\AngularCliMiddleware.cs" />
+    <Compile Include="SpaServices\Util\EventedStreamReader.cs" />
+    <Compile Include="SpaServices\Util\EventedStreamStringReader.cs" />
+    <Compile Include="SpaServices\Util\LoggerFinder.cs" />
+    <Compile Include="SpaServices\Util\TaskTimeoutExtensions.cs" />
+    <Compile Include="SpaServices\Util\TcpPortFinder.cs" />
+    <Compile Include="SpaServices\WebSockets\WebSocketOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientApp\dist\3rdpartylicenses.txt" />

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using AngularDemo.Util;
-using App.Demo.Util;
-using Microsoft.Owin.Logging;
 
-namespace AngularDemo.Npm
+namespace AngularDemo.SpaServices.Npm
 {
     /// <summary>
     /// Executes the <c>script</c> entries defined in a <c>package.json</c> file,

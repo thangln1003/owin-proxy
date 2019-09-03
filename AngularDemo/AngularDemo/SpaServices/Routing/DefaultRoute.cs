@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace App.Demo.Routing
-{
-    using System.Web.Routing;
+using System.Web.Routing;
 
+namespace AngularDemo.SpaServices.Routing
+{
     public class DefaultRoute : Route
     {
         public DefaultRoute()

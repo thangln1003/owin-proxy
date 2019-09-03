@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AngularDemo.WebSockets
+namespace AngularDemo.SpaServices.WebSockets
 {
     /// <summary>Configuration options for the WebSocketMiddleware</summary>
     public class WebSocketOptions

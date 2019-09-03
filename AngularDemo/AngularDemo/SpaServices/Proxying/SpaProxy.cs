@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AngularDemo.Proxying
+namespace AngularDemo.SpaServices.Proxying
 {
     // This duplicates and updates the proxying logic in SpaServices so that we can update
     // the project templates without waiting for 2.1 to ship. When 2.1 is ready to ship,

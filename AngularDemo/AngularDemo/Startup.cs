@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
+using AngularDemo.SpaServices;
 using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
@@ -17,8 +18,6 @@ namespace AngularDemo
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-
-            var pathToData = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
 
             //app.Use((Func<HttpContext, Func<Task>, Task>)((context, next) =>
             //{
@@ -49,13 +48,16 @@ namespace AngularDemo
             //});
 
             
-            ISpaBuilder spa = new DefaultSpaBuilder(app, new SpaOptions
-            {
-                //SourcePath = "ClientApp"
-                SourcePath = pathToData
-            });
 
-            spa.UseAngularCliServer("start");
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
+
+                if (HostingEnvironment.IsDevelopmentEnvironment)
+                {
+                    spa.UseAngularCliServer("start");
+                }
+            });
         }
     }
 }

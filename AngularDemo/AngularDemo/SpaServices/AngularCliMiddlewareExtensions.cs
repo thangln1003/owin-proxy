@@ -1,7 +1,7 @@
 ﻿using System;
-using AngularDemo.Util;
+using AngularDemo.SpaServices.Util;
 
-namespace AngularDemo
+namespace AngularDemo.SpaServices
 {
     /// <summary>
     /// Extension methods for enabling Angular CLI middleware support.
@@ -16,7 +16,7 @@ namespace AngularDemo
         /// This feature should only be used in development. For production deployments, be
         /// sure not to enable the Angular CLI server.
         /// </summary>
-        /// <param name="spaBuilder">The <see cref="T:Microsoft.AspNetCore.SpaServices.ISpaBuilder" />.</param>
+        /// <param name="spaBuilder">The <see cref="T:AngularDemo.SpaServices.ISpaBuilder" />.</param>
         /// <param name="npmScript">The name of the script in your package.json file that launches the Angular CLI process.</param>
         public static void UseAngularCliServer(this ISpaBuilder spaBuilder, string npmScript)
         {
