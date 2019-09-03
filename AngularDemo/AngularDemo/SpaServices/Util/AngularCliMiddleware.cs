@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -61,7 +60,7 @@ namespace AngularDemo.SpaServices.Util
             npmScriptRunner.AttachToLogger(logger);
 
             Match openBrowserLine;
-            using (EventedStreamStringReader stdErrReader = new EventedStreamStringReader(npmScriptRunner.StdErr))
+            using (var stdErrReader = new EventedStreamStringReader(npmScriptRunner.StdErr))
             {
                 try
                 {

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Web.Hosting;
+using Microsoft.Owin.FileSystems;
+using Microsoft.Owin.StaticFiles;
 using Owin;
 
 namespace AngularDemo.SpaServices
@@ -20,12 +23,12 @@ namespace AngularDemo.SpaServices
             {
                 if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi))
                 {
-                    return next.Invoke();
+                    return next();
                 }
 
                 context.Request.Path = options.DefaultPage;
 
-                return next.Invoke();
+                return next();
             });
 
             // Serve it as a static file
@@ -34,6 +37,11 @@ namespace AngularDemo.SpaServices
             //app.UseSpaStaticFilesInternal(
             //    options.DefaultPageStaticFileOptions ?? new StaticFileOptions(),
             //    allowFallbackOnServingWebRootFiles: true);
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileSystem = new PhysicalFileSystem(@".\ClientApp\dist")
+            });
 
             //// If the default file didn't get served as a static file (usually because it was not
             //// present on disk), the SPA is definitely not going to work.
@@ -46,8 +54,9 @@ namespace AngularDemo.SpaServices
             //    // Try to clarify the common scenario where someone runs an application in
             //    // Production environment without first publishing the whole application
             //    // or at least building the SPA.
-            //    var hostEnvironment = (IHostingEnvironment)context.RequestServices.GetService(typeof(IHostingEnvironment));
-            //    if (hostEnvironment != null && hostEnvironment.IsProduction())
+            //    //var hostEnvironment = (IHostingEnvironment)context.RequestServices.GetService(typeof(IHostingEnvironment));
+            //    //if (hostEnvironment != null && hostEnvironment.IsProduction())
+            //    if(!HostingEnvironment.IsDevelopmentEnvironment)
             //    {
             //        message += "Your application is running in Production mode, so make sure it has " +
             //            "been published, or that you have built your SPA manually. Alternatively you " +

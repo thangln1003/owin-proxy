@@ -1,5 +1,9 @@
 ﻿using System.IO;
+using System.Web;
 using System.Web.Hosting;
+using System.Web.Mvc;
+using System.Web.Mvc.Routing;
+using System.Web.Routing;
 using AngularDemo.SpaServices;
 using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
@@ -20,14 +24,27 @@ namespace AngularDemo
                 FileSystem = new PhysicalFileSystem(@".\ClientApp\dist")
             });
 
+            app.Use((context, next) =>
+            {
+                var contains = RouteTable.Routes.Contains(HttpContext.Current.Request.RequestContext.RouteData.Route);
+                var test = RouteTable.Routes.RouteExistingFiles;
+
+                if (!contains)
+                {
+                    return next();
+                }
+
+                return null;
+            });
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
 
-                if (HostingEnvironment.IsDevelopmentEnvironment)
-                {
-                    spa.UseAngularCliServer("start");
-                }
+                //if (HostingEnvironment.IsDevelopmentEnvironment)
+                //{
+                //    spa.UseAngularCliServer("start");
+                //}
             });
         }
     }
