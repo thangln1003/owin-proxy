@@ -19,33 +19,66 @@ namespace AngularDemo
         {
             ConfigureAuth(app);
 
-            app.UseStaticFiles(new StaticFileOptions
+            app.UseFileServer(new FileServerOptions()
             {
+                RequestPath = PathString.Empty,
+                FileSystem = new PhysicalFileSystem(@".\")
+            });
+
+            app.UseStaticFiles("/Scripts");
+            app.UseStaticFiles("/Content");
+
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    RequestPath = new PathString("/scripts"),
+            //    FileSystem = new PhysicalFileSystem(@".\Scripts")
+            //});
+
+
+            app.UseFileServer(new FileServerOptions
+            {
+                RequestPath = PathString.Empty,
                 FileSystem = new PhysicalFileSystem(@".\ClientApp\dist")
             });
 
-            app.Use((context, next) =>
-            {
-                var contains = RouteTable.Routes.Contains(HttpContext.Current.Request.RequestContext.RouteData.Route);
-                var test = RouteTable.Routes.RouteExistingFiles;
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    RequestPath = new PathString("/content"),
+            //    FileSystem = new PhysicalFileSystem(@".\Content")
+            //});
 
-                if (!contains)
-                {
-                    return next();
-                }
+            //app.Use((context, next) =>
+            //{
+            //   var currentRequest = HttpContext.Current.Request.RequestContext;
 
-                return null;
-            });
+            //   var controllerId = currentRequest.RouteData.Values.Count > 0 ? currentRequest.RouteData.GetRequiredString("controller") : null;
+            //   if (controllerId == null) return next();
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
+            //   IController controller = null;
+            //   IControllerFactory factory = null;
+            //   try
+            //   {
+            //       factory = ControllerBuilder.Current.GetControllerFactory();
+            //       controller = factory.CreateController(currentRequest, controllerId);
+            //       controller?.Execute(currentRequest);
+            //   }
+            //   finally
+            //   {
+            //       factory.ReleaseController(controller);
+            //   }
 
-                //if (HostingEnvironment.IsDevelopmentEnvironment)
-                //{
-                //    spa.UseAngularCliServer("start");
-                //}
-            });
+            //   return next();
+            //});
+
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
+
+            //    //if (HostingEnvironment.IsDevelopmentEnvironment)
+            //    //{
+            //    //    spa.UseAngularCliServer("start");
+            //    //}
+            //});
         }
     }
 }

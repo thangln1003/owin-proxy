@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Web.Hosting;
+using System.Web;
+using System.Web.Mvc;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
@@ -21,7 +22,23 @@ namespace AngularDemo.SpaServices
             // Rewrite all requests to the default page
             app.Use((context, next) =>
             {
-                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi))
+                var currentRequest = HttpContext.Current.Request.RequestContext;
+                var controllerId = currentRequest.RouteData.Values.Count > 0 ? currentRequest.RouteData.GetRequiredString("controller") : null;
+
+                //IController controller = null;
+                //IControllerFactory factory = null;
+                //try
+                //{
+                //    factory = ControllerBuilder.Current.GetControllerFactory();
+                //    controller = factory.CreateController(currentRequest, controllerId);
+                //    controller?.Execute(currentRequest);
+                //}
+                //finally
+                //{
+                //    factory.ReleaseController(controller);
+                //}
+
+                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi) || controllerId != null)
                 {
                     return next();
                 }
