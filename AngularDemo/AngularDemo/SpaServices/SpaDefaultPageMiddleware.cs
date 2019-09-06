@@ -23,27 +23,29 @@ namespace AngularDemo.SpaServices
             // Rewrite all requests to the default page
             app.Use((context, next) =>
             {
+                //TODO: Refactor these snippet codes
                 var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
                 var isController = routeValues.ContainsKey("controller") &&
-                                   !routeValues.Values.Any(x => x.ToString().Contains("."));
+                                   !routeValues.Values.Any(x => x.ToString().Contains(".")
+                                                                || x.ToString().Contains("sockjs-node"));
+
                 var isAction = routeValues.ContainsKey("action");
 
                 if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi) ||
                     (isController && isAction && (!context.Request.Path.StartsWithSegments(new PathString("/app-home"))
-                                                  && !context.Request.Path.StartsWithSegments(new PathString("/test"))))
-                )
+                                                  && !context.Request.Path.StartsWithSegments(new PathString("/test")))))
                 {
                     return next();
                 }
 
                 context.Request.Path = options.DefaultPage;
-
                 return next();
             });
 
             // Serve it as a static file
             // Developers who need to host more than one SPA with distinct default pages can
             // override the file provider
+
             //app.UseSpaStaticFilesInternal(
             //    options.DefaultPageStaticFileOptions ?? new StaticFileOptions(),
             //    allowFallbackOnServingWebRootFiles: true);

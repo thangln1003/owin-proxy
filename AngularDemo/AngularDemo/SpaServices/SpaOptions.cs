@@ -54,7 +54,7 @@ namespace AngularDemo.SpaServices
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="T:Microsoft.AspNetCore.Builder.StaticFileOptions" /> that supplies content
+        /// Gets or sets the <see cref="T:Microsoft.Owin.StaticFiles.StaticFileOptions" /> that supplies content
         /// for serving the SPA's default page.
         /// 
         /// If not set, a default file provider will read files from the

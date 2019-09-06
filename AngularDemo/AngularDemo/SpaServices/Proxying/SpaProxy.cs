@@ -149,7 +149,7 @@ namespace AngularDemo.SpaServices.Proxying
             context.Response.StatusCode = (int)responseMessage.StatusCode;
             HttpResponseHeaders headers = responseMessage.Headers;
 
-
+            //TODO: Optimize these snippet codes
             //foreach (var header in responseMessage.Headers)
             //{
             //    context.Response.Headers[header.Key] = header.Value.ToArray();

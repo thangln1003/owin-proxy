@@ -27,10 +27,10 @@ namespace AngularDemo
             {
                 spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
 
-                //if (HostingEnvironment.IsDevelopmentEnvironment)
-                //{
-                //    spa.UseAngularCliServer("start");
-                //}
+                if (HostingEnvironment.IsDevelopmentEnvironment)
+                {
+                    spa.UseAngularCliServer("start");
+                }
             });
         }
     }
