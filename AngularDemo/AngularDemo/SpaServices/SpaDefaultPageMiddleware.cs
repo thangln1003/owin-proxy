@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
@@ -22,23 +23,15 @@ namespace AngularDemo.SpaServices
             // Rewrite all requests to the default page
             app.Use((context, next) =>
             {
-                var currentRequest = HttpContext.Current.Request.RequestContext;
-                var controllerId = currentRequest.RouteData.Values.Count > 0 ? currentRequest.RouteData.GetRequiredString("controller") : null;
+                var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+                var isController = routeValues.ContainsKey("controller") &&
+                                   !routeValues.Values.Any(x => x.ToString().Contains("."));
+                var isAction = routeValues.ContainsKey("action");
 
-                //IController controller = null;
-                //IControllerFactory factory = null;
-                //try
-                //{
-                //    factory = ControllerBuilder.Current.GetControllerFactory();
-                //    controller = factory.CreateController(currentRequest, controllerId);
-                //    controller?.Execute(currentRequest);
-                //}
-                //finally
-                //{
-                //    factory.ReleaseController(controller);
-                //}
-
-                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi) || controllerId != null)
+                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi) ||
+                    (isController && isAction && (!context.Request.Path.StartsWithSegments(new PathString("/app-home"))
+                                                  && !context.Request.Path.StartsWithSegments(new PathString("/test"))))
+                )
                 {
                     return next();
                 }

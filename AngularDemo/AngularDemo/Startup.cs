@@ -1,9 +1,5 @@
 ﻿using System.IO;
-using System.Web;
 using System.Web.Hosting;
-using System.Web.Mvc;
-using System.Web.Mvc.Routing;
-using System.Web.Routing;
 using AngularDemo.SpaServices;
 using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
@@ -19,66 +15,23 @@ namespace AngularDemo
         {
             ConfigureAuth(app);
 
-            app.UseFileServer(new FileServerOptions()
-            {
-                RequestPath = PathString.Empty,
-                FileSystem = new PhysicalFileSystem(@".\")
-            });
-
             app.UseStaticFiles("/Scripts");
             app.UseStaticFiles("/Content");
-
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    RequestPath = new PathString("/scripts"),
-            //    FileSystem = new PhysicalFileSystem(@".\Scripts")
-            //});
-
-
-            app.UseFileServer(new FileServerOptions
+            app.UseStaticFiles(new StaticFileOptions
             {
                 RequestPath = PathString.Empty,
                 FileSystem = new PhysicalFileSystem(@".\ClientApp\dist")
             });
 
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    RequestPath = new PathString("/content"),
-            //    FileSystem = new PhysicalFileSystem(@".\Content")
-            //});
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
 
-            //app.Use((context, next) =>
-            //{
-            //   var currentRequest = HttpContext.Current.Request.RequestContext;
-
-            //   var controllerId = currentRequest.RouteData.Values.Count > 0 ? currentRequest.RouteData.GetRequiredString("controller") : null;
-            //   if (controllerId == null) return next();
-
-            //   IController controller = null;
-            //   IControllerFactory factory = null;
-            //   try
-            //   {
-            //       factory = ControllerBuilder.Current.GetControllerFactory();
-            //       controller = factory.CreateController(currentRequest, controllerId);
-            //       controller?.Execute(currentRequest);
-            //   }
-            //   finally
-            //   {
-            //       factory.ReleaseController(controller);
-            //   }
-
-            //   return next();
-            //});
-
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = Path.GetFullPath(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ClientApp"));
-
-            //    //if (HostingEnvironment.IsDevelopmentEnvironment)
-            //    //{
-            //    //    spa.UseAngularCliServer("start");
-            //    //}
-            //});
+                //if (HostingEnvironment.IsDevelopmentEnvironment)
+                //{
+                //    spa.UseAngularCliServer("start");
+                //}
+            });
         }
     }
 }

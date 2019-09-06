@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Routing;
 using AngularDemo.SpaServices.Routing;
 using Microsoft.Owin;
@@ -54,7 +55,8 @@ namespace AngularDemo.SpaServices.Proxying
         /// </summary>
         /// <param name="spaBuilder">The <see cref="ISpaBuilder"/>.</param>
         /// <param name="baseUriTaskFactory">A callback that will be invoked on each request to supply a <see cref="Task"/> that resolves with the target base URI to which requests should be proxied.</param>
-        public static void UseProxyToSpaDevelopmentServer(this ISpaBuilder spaBuilder, Func<Task<Uri>> baseUriTaskFactory)
+        public static void UseProxyToSpaDevelopmentServer(this ISpaBuilder spaBuilder,
+            Func<Task<Uri>> baseUriTaskFactory)
         {
             var applicationBuilder = spaBuilder.ApplicationBuilder;
             //var applicationStoppingToken = GetStoppingToken(applicationBuilder);
@@ -71,8 +73,13 @@ namespace AngularDemo.SpaServices.Proxying
             // Proxy all requests to the SPA development server
             applicationBuilder.Use(async (context, next) =>
             {
-                var contains = RouteTable.Routes.Contains(HttpContext.Current.Request.RequestContext.RouteData.Route);
-                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi))
+                var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+                var isController = routeValues.ContainsKey("controller") &&
+                                   !routeValues.Values.Any(x => x.ToString().Contains("."));
+                var isAction = routeValues.ContainsKey("action");
+
+                if (context.Request.Path.StartsWithSegments(spaBuilder.Options.DefaultApi) ||
+                    (isController && isAction))
                 {
                     await next();
                 }
